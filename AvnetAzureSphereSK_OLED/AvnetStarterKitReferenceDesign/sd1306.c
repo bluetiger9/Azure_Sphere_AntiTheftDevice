@@ -123,7 +123,8 @@ uint8_t sd1306_init(void)
 	// Set Contrast
 	sd1306_send_command(sd1306_ADDR, 0x81);
 	// Contrast data
-	sd1306_send_command(sd1306_ADDR, 0x00);
+	//sd1306_send_command(sd1306_ADDR, 0x00);
+	sd1306_send_command(sd1306_ADDR, 0xcf);
 
 	// Set discharge precharge periods
 	sd1306_send_command(sd1306_ADDR, 0xd9);
@@ -156,7 +157,8 @@ uint8_t sd1306_init(void)
 	// Start Page
 	sd1306_send_command(sd1306_ADDR, 0x00);
 	// Last Page
-	sd1306_send_command(sd1306_ADDR, 0x07);
+	//sd1306_send_command(sd1306_ADDR, 0x07);
+	sd1306_send_command(sd1306_ADDR, 0xff);
 
 	return 0;
 }
