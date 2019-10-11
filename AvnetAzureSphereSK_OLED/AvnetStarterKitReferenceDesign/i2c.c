@@ -51,6 +51,8 @@
 #include "lsm6dso_reg.h"
 #include "lps22hh_reg.h"
 
+#include "hx711.h";
+
 /* Private variables ---------------------------------------------------------*/
 static axis3bit16_t data_raw_acceleration;
 static axis3bit16_t data_raw_angular_rate;
@@ -210,6 +212,10 @@ void AccelTimerEventHandler(EventData *eventData)
 	altitude = 44330 * (1 - powf((pressure_hPa / 1013.25), 1 / 5.255));  // pressure altitude in meters
 
 	Log_Debug("ALSPT19: Ambient Light[Lux] : %.2f\r\n", light_sensor);
+
+	Log_Debug("PMS7003 read...");
+	int32_t hx711Read = hx711_measurement();
+	// TODO: weight calculation
 
 	//// OLED
 	update_oled();

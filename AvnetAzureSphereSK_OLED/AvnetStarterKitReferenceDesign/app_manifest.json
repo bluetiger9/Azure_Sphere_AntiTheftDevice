@@ -11,7 +11,7 @@
     "AllowedConnections": [ "iotc-95d7664b-069f-4c17-b38e-b5d01ae10146.azure-devices.net" ],
     "AllowedTcpServerPorts": [],
     "AllowedUdpServerPorts": [],
-    "Gpio": [ 0, 4, 5, 8, 9, 10, 12, 13, 34, 1 ],
+    "Gpio": [ 0, 4, 5, 8, 9, 10, 12, 13, 34, 1, 43 ],
     "Uart": [],
     "I2cMaster": [ "ISU2" ],
     "SpiMaster": [],

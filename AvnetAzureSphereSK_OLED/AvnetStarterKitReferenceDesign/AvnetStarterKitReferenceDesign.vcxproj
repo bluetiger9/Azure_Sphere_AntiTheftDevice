@@ -53,6 +53,7 @@
     <ClCompile Include="epoll_timerfd_utilities.c" />
     <ClCompile Include="oled.c" />
     <ClCompile Include="parson.c" />
+    <ClCompile Include="hx711.c" />
     <ClCompile Include="sd1306.c" />
     <ClInclude Include="azure_iot_utilities.h" />
     <ClInclude Include="build_options.h" />
@@ -62,6 +63,7 @@
     <ClInclude Include="epoll_timerfd_utilities.h" />
     <ClInclude Include="oled.h" />
     <ClInclude Include="parson.h" />
+    <ClInclude Include="hx711.h" />
     <ClInclude Include="sd1306.h" />
     <UpToDateCheckInput Include="app_manifest.json" />
     <ClInclude Include="i2c.h" />

@@ -65,6 +65,8 @@
 //// OLED
 #include "oled.h"
 
+#include "hx711.h"
+
 //// ADC connection
 #include <sys/time.h>
 #include <sys/socket.h>
@@ -470,6 +472,12 @@ int main(int argc, char *argv[])
     if (InitPeripheralsAndHandlers() != 0) {
         terminationRequired = true;
     }
+
+        int hx711_gpioD0 = GPIO_OpenAsInput(AVT_MODULE_GPIO43_ADC2);// , GPIO_OutputMode_OpenDrain, (GPIO_Value_Type)false);
+	int hx711_gpioCLK = GPIO_OpenAsOutput(AVT_MODULE_GPIO1_PWM1, GPIO_OutputMode_PushPull, (GPIO_Value_Type) false);
+	hx711_init(hx711_gpioD0, hx711_gpioCLK);
+	// hx711_main();
+
 
     // Use epoll to wait for events and trigger handlers, until an error or SIGTERM happens
     while (!terminationRequired) {

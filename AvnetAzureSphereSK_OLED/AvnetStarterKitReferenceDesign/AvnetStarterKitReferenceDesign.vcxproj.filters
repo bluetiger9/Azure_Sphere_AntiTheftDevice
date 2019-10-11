@@ -52,6 +52,9 @@
     <ClCompile Include="sd1306.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="hx711.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="epoll_timerfd_utilities.h">
@@ -91,6 +94,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="sd1306.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hx711.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
