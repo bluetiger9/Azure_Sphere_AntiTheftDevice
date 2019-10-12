@@ -1,3 +1,7 @@
+/** 
+ * Based on:
+ * https://www.ccsinfo.com/forum/viewtopic.php?p=195617#195617
+ */
 #include "hx711.h"
 
 #include <stdint.h>
