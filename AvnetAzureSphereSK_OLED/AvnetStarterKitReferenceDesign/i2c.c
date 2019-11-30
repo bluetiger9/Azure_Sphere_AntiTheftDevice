@@ -78,6 +78,8 @@ uint8_t lsm6dso_status = 1;
 uint8_t lps22hh_status = 1;
 uint8_t RTCore_status = 1;
 
+float hx711_weight = NAN;
+
 //Extern variables
 int i2cFd = -1;
 extern int epollFd;
@@ -213,10 +215,8 @@ void AccelTimerEventHandler(EventData *eventData)
 
 	Log_Debug("ALSPT19: Ambient Light[Lux] : %.2f\r\n", light_sensor);
 
-	Log_Debug("PMS7003 read...");
-	int32_t hx711Read = hx711_measurement();
-	// TODO: weight calculation
-
+	hx711_weight = hx711_get_units(10 /*times*/);
+	Log_Debug("HX711 reading: %.2f grams.\n", hx711_weight);
 	//// OLED
 	update_oled();
 
@@ -233,8 +233,8 @@ void AccelTimerEventHandler(EventData *eventData)
 			Log_Debug("ERROR: not enough memory to send telemetry");
 		}
 		
-		snprintf(pjsonBuffer, JSON_BUFFER_SIZE, "{\"gX\":\"%.2lf\", \"gY\":\"%.2lf\", \"gZ\":\"%.2lf\", \"aX\": \"%.2f\", \"aY\": \"%.2f\", \"aZ\": \"%.2f\", \"pressure\": \"%.2f\", \"light_intensity\": \"%.2f\", \"altitude\": \"%.2f\", \"temp\": \"%.2f\",  \"rssi\": \"%d\"}",
-			angular_rate_dps[0], angular_rate_dps[1], angular_rate_dps[2], acceleration_mg[0], acceleration_mg[1], acceleration_mg[2], pressure_hPa, light_sensor, altitude, lsm6dsoTemperature_degC, network_data.rssi);
+		snprintf(pjsonBuffer, JSON_BUFFER_SIZE, "{\"gX\":\"%.2lf\", \"gY\":\"%.2lf\", \"gZ\":\"%.2lf\", \"aX\": \"%.2f\", \"aY\": \"%.2f\", \"aZ\": \"%.2f\", \"pressure\": \"%.2f\", \"light_intensity\": \"%.2f\", \"altitude\": \"%.2f\", \"temp\": \"%.2f\",  \"rssi\": \"%d\", \"weight\": \"%.1f\"}",
+			angular_rate_dps[0], angular_rate_dps[1], angular_rate_dps[2], acceleration_mg[0], acceleration_mg[1], acceleration_mg[2], pressure_hPa, light_sensor, altitude, lsm6dsoTemperature_degC, network_data.rssi, hx711_weight);
 
 		Log_Debug("\n[Info] Sending telemetry: %s\n", pjsonBuffer);
 		AzureIoT_SendMessage(pjsonBuffer);

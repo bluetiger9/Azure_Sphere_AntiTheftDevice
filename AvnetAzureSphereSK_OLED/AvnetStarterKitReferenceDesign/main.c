@@ -93,8 +93,8 @@ int userLedGreenFd = -1;
 int userLedBlueFd = -1;
 int appLedFd = -1;
 int wifiLedFd = -1;
-int clickSocket1Relay1Fd = -1;
-int clickSocket1Relay2Fd = -1;
+//int clickSocket1Relay1Fd = -1;
+//int clickSocket1Relay2Fd = -1;
 
 //// ADC connection
 static const char rtAppComponentId[] = "005180bc-402f-4cb3-a662-72937dbcde47";
@@ -473,10 +473,14 @@ int main(int argc, char *argv[])
         terminationRequired = true;
     }
 
-        int hx711_gpioD0 = GPIO_OpenAsInput(AVT_MODULE_GPIO43_ADC2);// , GPIO_OutputMode_OpenDrain, (GPIO_Value_Type)false);
-	int hx711_gpioCLK = GPIO_OpenAsOutput(AVT_MODULE_GPIO1_PWM1, GPIO_OutputMode_PushPull, (GPIO_Value_Type) false);
-	hx711_init(hx711_gpioD0, hx711_gpioCLK);
-	// hx711_main();
+	int hx711_gpioD0 = GPIO_OpenAsInput(AVT_SK_CM2_PWM /*AVT_SK_CM2_AN*/);//AVT_MODULE_GPIO43_ADC2); // , GPIO_OutputMode_OpenDrain, (GPIO_Value_Type)false);
+	int hx711_gpioCLK = GPIO_OpenAsOutput(AVT_SK_CM2_AN /*AVT_SK_CM2_PWM*/, GPIO_OutputMode_PushPull, (GPIO_Value_Type) false); //AVT_MODULE_GPIO1_PWM2
+	hx711_begin(hx711_gpioD0, hx711_gpioCLK, 128);
+	hx711_set_scale(860.0 /* 1g = 860 units*/);
+
+	Log_Debug("Calibrating the HX711 weight sensor.\n");
+	hx711_tare(10);
+	Log_Debug("Done.\n");
 
 
     // Use epoll to wait for events and trigger handlers, until an error or SIGTERM happens

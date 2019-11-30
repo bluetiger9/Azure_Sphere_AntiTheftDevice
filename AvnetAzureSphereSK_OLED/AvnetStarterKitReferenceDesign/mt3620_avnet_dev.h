@@ -137,7 +137,7 @@
 // Click Module Site #2 Header J4
 
 /// <summary>Click Module 2 PWM is GPIO 1.</summary>
-#define AVT_SK_CM2_PWM AVT_MODULE_GPIO0_PWM1
+#define AVT_SK_CM2_PWM AVT_MODULE_GPIO1_PWM1
 
 /// <summary> Click Module 2 INT is GPIO 2.</summary>
 #define AVT_SK_CM2_INT AVT_MODULE_GPIO2_PWM2
