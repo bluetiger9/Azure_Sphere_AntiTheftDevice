@@ -6,25 +6,25 @@
 
 #include <stdint.h>
 
-/// <summary>
-/// There are two buffers, inbound and outbound, which are used to track
-/// how much data has been written to, and read from, each shared buffer.
-/// </summary>
+   /// <summary>
+   /// There are two buffers, inbound and outbound, which are used to track
+   /// how much data has been written to, and read from, each shared buffer.
+   /// </summary>
 typedef struct {
-    /// <summary>
-    /// <para>Enqueue function uses this value to store the last position written to
-    /// by the real-time capable application.</para>
-    /// <para>Dequeue function uses this value to find the last position written to by
-    /// the high-level application.</summary>
-    uint32_t writePosition;
-    /// <summary>
-    /// <para>Enqueue function uses this value to find the last position read from by the
-    /// high-level applicaton.</para>
-    /// <para>Dequeue function uses this value to store the last position read from by
-    /// the real-time application.</para>
-    uint32_t readPosition;
-    /// <summary>Reserved for alignment.</summary>
-    uint32_t reserved[14];
+	/// <summary>
+	/// <para>Enqueue function uses this value to store the last position written to
+	/// by the real-time capable application.</para>
+	/// <para>Dequeue function uses this value to find the last position written to by
+	/// the high-level application.</summary>
+	uint32_t writePosition;
+	/// <summary>
+	/// <para>Enqueue function uses this value to find the last position read from by the
+	/// high-level applicaton.</para>
+	/// <para>Dequeue function uses this value to store the last position read from by
+	/// the real-time application.</para>
+	uint32_t readPosition;
+	/// <summary>Reserved for alignment.</summary>
+	uint32_t reserved[14];
 } BufferHeader;
 
 /// <summary>Blocks inside the shared buffer have this alignment.</summary>
@@ -52,7 +52,7 @@ int GetIntercoreBuffers(BufferHeader **outbound, BufferHeader **inbound, uint32_
 /// <param name="inbound">The inbound buffer, as obtained from <see cref="GetIntercoreBuffers" />.
 /// <returns>0 if able to enqueue the data, -1 otherwise.</returns>
 int EnqueueData(BufferHeader *inbound, BufferHeader *outbound, uint32_t bufSize, const void *src,
-                uint32_t dataSize);
+	uint32_t dataSize);
 
 /// <summary>
 /// Remove data from the shared buffer, which has been written by the high-level application.
@@ -67,6 +67,6 @@ int EnqueueData(BufferHeader *inbound, BufferHeader *outbound, uint32_t bufSize,
 /// </param>
 /// <returns>0 if able to dequeue the data, -1 otherwise.</returns>
 int DequeueData(BufferHeader *outbound, BufferHeader *inbound, uint32_t bufSize, void *dest,
-                uint32_t *dataSize);
+	uint32_t *dataSize);
 
 #endif // #ifndef MT3620_INTERCORE_H

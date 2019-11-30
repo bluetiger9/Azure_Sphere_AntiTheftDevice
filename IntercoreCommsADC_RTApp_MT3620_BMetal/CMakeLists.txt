@@ -2,10 +2,14 @@
 #  Licensed under the MIT License.
 
 CMAKE_MINIMUM_REQUIRED(VERSION 3.11)
-PROJECT(IntercoreCommsADC_RTApp_MT3620_BMetal C)
+PROJECT(HelloWorld_RTApp_MT3620_BareMetal C)
 
 # Create executable
-ADD_EXECUTABLE(${PROJECT_NAME} main.c mt3620-intercore.c mt3620-timer-poll.c mt3620-uart-poll.c mt3620-adc.c)
+file(GLOB C_SRC_FILES
+	"*.c"
+)
+
+ADD_EXECUTABLE(${PROJECT_NAME} ${C_SRC_FILES})
 TARGET_LINK_LIBRARIES(${PROJECT_NAME})
 SET_TARGET_PROPERTIES(${PROJECT_NAME} PROPERTIES LINK_DEPENDS ${CMAKE_SOURCE_DIR}/linker.ld)
 
