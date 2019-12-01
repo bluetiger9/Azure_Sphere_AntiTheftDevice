@@ -89,7 +89,12 @@ void update_oled()
 			update_other(light_sensor, 0, 0); 
 		}
 		break;
-		case 7:
+        case 7:
+		{
+			update_hx711_weight(hx711_weight);
+		}
+		break;
+		case 8:
 		{
 			oled_draw_logo();
 		}
@@ -477,7 +482,7 @@ void update_environ(float temp1, float temp2, float atm)
 	// Draw the value of temp1
 	sd1306_draw_string(sizeof(str_temp1) * 6, OLED_LINE_1_Y, string_data, FONT_SIZE_LINE, white_pixel);
 	// Draw the units of temp1
-	sd1306_draw_string(sizeof(str_temp1) * 6 + (get_str_size(string_data) + 1) * 6, OLED_LINE_1_Y, "°C", FONT_SIZE_LINE, white_pixel);
+	sd1306_draw_string(sizeof(str_temp1) * 6 + (get_str_size(string_data) + 1) * 6, OLED_LINE_1_Y, "\B0C", FONT_SIZE_LINE, white_pixel);
 
 	// Convert temp2 value to string
 	ftoa(temp2, string_data, 2);
@@ -487,7 +492,7 @@ void update_environ(float temp1, float temp2, float atm)
 	// Draw the value of temp2
 	sd1306_draw_string(sizeof(str_temp2) * 6, OLED_LINE_2_Y, string_data, FONT_SIZE_LINE, white_pixel);
 	// Draw the value of temp2
-	sd1306_draw_string(sizeof(str_temp2) * 6 + (get_str_size(string_data) + 1) * 6, OLED_LINE_2_Y, "°C", FONT_SIZE_LINE, white_pixel);
+	sd1306_draw_string(sizeof(str_temp2) * 6 + (get_str_size(string_data) + 1) * 6, OLED_LINE_2_Y, "\B0C", FONT_SIZE_LINE, white_pixel);
 
 	// Convert atm value to string
 	ftoa(atm, string_data, 2);
@@ -565,6 +570,38 @@ void update_other(float x, float y, float z)
 	sd1306_draw_string(sizeof(str_tbd2) * 6, OLED_LINE_3_Y, string_data, FONT_SIZE_LINE, white_pixel);
 	// Draw the units of z
 	sd1306_draw_string(sizeof(str_tbd2) * 6 + (get_str_size(string_data) + 1) * 6, OLED_LINE_3_Y, "Units", FONT_SIZE_LINE, white_pixel);
+
+	// Send the buffer to OLED RAM
+	sd1306_refresh();
+}
+
+
+/**
+  * @brief  Show the weigth measured by the HX711 sensor
+  */
+void update_hx711_weight(float weight)
+{
+	uint32_t i;
+	uint8_t string_data[10];
+
+	// Strings for labels
+	uint8_t str_weight[] = "Light:";
+
+	// Clear OLED buffer
+	clear_oled_buffer();
+
+	// Draw the title
+	sd1306_draw_string(OLED_TITLE_X, OLED_TITLE_Y, "  Weight", FONT_SIZE_TITLE, white_pixel);
+
+	// Convert x value to string
+	ftoa(weight, string_data, 2);
+
+	// Draw a label at line 1
+	sd1306_draw_string(OLED_LINE_1_X, OLED_LINE_1_Y, str_weight, FONT_SIZE_LINE, white_pixel);
+	// Draw the value of x
+	sd1306_draw_string(sizeof(str_weight) * 6, OLED_LINE_1_Y, string_data, FONT_SIZE_LINE, white_pixel);
+	// Draw the units of x
+	sd1306_draw_string(sizeof(str_weight) * 6 + (get_str_size(string_data) + 1) * 6, OLED_LINE_1_Y, "grams", FONT_SIZE_LINE, white_pixel);
 
 	// Send the buffer to OLED RAM
 	sd1306_refresh();

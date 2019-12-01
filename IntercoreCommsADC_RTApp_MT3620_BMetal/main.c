@@ -137,24 +137,29 @@ static _Noreturn void RTCoreMain(void)
 		UartCM4Debug,
 		"Install a loopback header on ISU0, and press button A to send a message.\r\n");
 
-	//Uart_Init(UartIsu0, HandleUartIsu0RxIrq);
+	// Block includes led1RedGpio, GPIO1.
+	static const GpioBlock pwm0 = {
+		.baseAddr = 0x38010000,.type = GpioBlock_PWM, .firstPin = 0, .pinCount = 4 };
 
-	// Block includes led1RedGpio, GPIO8.
-	static const GpioBlock pwm2 = {
-		.baseAddr = 0x38030000,.type = GpioBlock_PWM,.firstPin = 8,.pinCount = 4 };
+	Mt3620_Gpio_AddBlock(&pwm0);
 
-	Mt3620_Gpio_AddBlock(&pwm2);
+	// Block includes buttonAGpio, GPIO43
+	static const GpioBlock adc0 = {
+		.baseAddr = 0x38000000,.type = GpioBlock_ADC, .firstPin = 41, .pinCount = 8 };	
 
-	// Block includes buttonAGpio, GPIO12
-	static const GpioBlock grp3 = {
-		.baseAddr = 0x38040000,.type = GpioBlock_GRP,.firstPin = 12,.pinCount = 4 };
+	Mt3620_Gpio_AddBlock(&adc0);
 
-	//static const uintptr_t ADC_CTRL_BASE = 0x38000100;
+    uint8_t doutPin = 1;
+    uint8_t sckPin = 43;
 
-	Mt3620_Gpio_AddBlock(&grp3);
+	Mt3620_Gpio_ConfigurePinForOutput(sckPin);
+	Mt3620_Gpio_ConfigurePinForInput(doutPin);
 
-	//Mt3620_Gpio_ConfigurePinForOutput(led1RedGpio);
-	//Mt3620_Gpio_ConfigurePinForInput(buttonAGpio);
+    hx711_begin(doutPin, sckPin, 128);
+	hx711_set_scale(860.0 /* 1g = 860 units*/);
+
+    // calibrate
+	hx711_tare(10);
 
 	BufferHeader *outbound, *inbound;
 	uint32_t sharedBufSize = 0;
@@ -189,7 +194,9 @@ static _Noreturn void RTCoreMain(void)
 			continue;
 		}
 
-		uint8_t analog_data[4];// = { 0 , 1, 2, 3 };
+        float hx711_weight = hx711_get_units(10 /*times*/);
+
+		uint8_t *analog_data = &hx711_weight;
 		j = 0;
 		for (int i = payloadStart; i < payloadStart + 4; i++)
 		{

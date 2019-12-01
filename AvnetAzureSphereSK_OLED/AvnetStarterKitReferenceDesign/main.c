@@ -261,18 +261,15 @@ static void SocketEventHandler(EventData *eventData)
 	}
 
 	// Copy data from Rx buffer to analog_data union
+    float hx711_weight_local;
+    uint8_t *data = &hx711_weight_local;
 	for (int i = 0; i < sizeof(analog_data); i++)
 	{
 		analog_data.u8[i] = rxBuf[i];
+        data[i] = rxBuf[i];
 	}
 
-	// get voltage (2.5*adc_reading/4096)
-	// divide by 3650 (3.65 kohm) to get current (A)
-	// multiply by 1000000 to get uA
-	// divide by 0.1428 to get Lux (based on fluorescent light Fig. 1 datasheet)
-	// divide by 0.5 to get Lux (based on incandescent light Fig. 1 datasheet)
-	// We can simplify the factors, but for demostration purpose it's OK
-	light_sensor = ((float)analog_data.u32*2.5/4095)*1000000 / (3650*0.1428);
+    hx711_weight = hx711_weight_local;
 
 	Log_Debug("Received %d bytes. ", bytesReceived);
 
@@ -473,14 +470,15 @@ int main(int argc, char *argv[])
         terminationRequired = true;
     }
 
-	int hx711_gpioD0 = GPIO_OpenAsInput(AVT_SK_CM2_PWM /*AVT_SK_CM2_AN*/);//AVT_MODULE_GPIO43_ADC2); // , GPIO_OutputMode_OpenDrain, (GPIO_Value_Type)false);
-	int hx711_gpioCLK = GPIO_OpenAsOutput(AVT_SK_CM2_AN /*AVT_SK_CM2_PWM*/, GPIO_OutputMode_PushPull, (GPIO_Value_Type) false); //AVT_MODULE_GPIO1_PWM2
-	hx711_begin(hx711_gpioD0, hx711_gpioCLK, 128);
-	hx711_set_scale(860.0 /* 1g = 860 units*/);
+    // note: enable if real time app is not used
+	//int hx711_gpioD0 = GPIO_OpenAsInput(AVT_SK_CM2_PWM /*AVT_SK_CM2_AN*/);//AVT_MODULE_GPIO43_ADC2); // , GPIO_OutputMode_OpenDrain, (GPIO_Value_Type)false);
+	//int hx711_gpioCLK = GPIO_OpenAsOutput(AVT_SK_CM2_AN /*AVT_SK_CM2_PWM*/, GPIO_OutputMode_PushPull, (GPIO_Value_Type) false); //AVT_MODULE_GPIO1_PWM2
+	//hx711_begin(hx711_gpioD0, hx711_gpioCLK, 128);
+	//hx711_set_scale(860.0 /* 1g = 860 units*/);
 
-	Log_Debug("Calibrating the HX711 weight sensor.\n");
-	hx711_tare(10);
-	Log_Debug("Done.\n");
+	//Log_Debug("Calibrating the HX711 weight sensor.\n");
+	//hx711_tare(10);
+	//Log_Debug("Done.\n");
 
 
     // Use epoll to wait for events and trigger handlers, until an error or SIGTERM happens

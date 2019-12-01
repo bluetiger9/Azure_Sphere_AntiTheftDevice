@@ -11,7 +11,7 @@
 #include "deviceTwin.h"
 
 
-#define OLED_NUM_SCREEN 7
+#define OLED_NUM_SCREEN 8
 
 #define OLED_TITLE_X      0
 #define OLED_TITLE_Y      0 
@@ -63,6 +63,8 @@ typedef struct
 extern sensor_var sensor_data;
 extern network_var network_data;
 extern float light_sensor;
+extern float hx711_weight;
+
 /*
 #define WIFICONFIG_SSID_MAX_LENGTH 20
 #define WIFICONFIG_BSSID_BUFFER_SIZE 20
@@ -93,6 +95,7 @@ void update_accel(float x, float y, float z);
 void update_angular_rate(float x, float y, float z);
 void update_environ(float temp1, float temp2, float atm);
 void update_other(float x, float y, float z);
+void update_hx711_weight(float hx711_weight);
 
 /**
   * @brief  Converts a given integer x to string uint8_t[]

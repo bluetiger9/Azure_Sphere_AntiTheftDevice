@@ -215,7 +215,8 @@ void AccelTimerEventHandler(EventData *eventData)
 
 	Log_Debug("ALSPT19: Ambient Light[Lux] : %.2f\r\n", light_sensor);
 
-	hx711_weight = hx711_get_units(10 /*times*/);
+    // note: hx711_weight is populated by the real time app
+	//hx711_weight = hx711_get_units(10 /*times*/);
 	Log_Debug("HX711 reading: %.2f grams.\n", hx711_weight);
 	//// OLED
 	update_oled();
